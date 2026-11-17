@@ -2,6 +2,10 @@
 
 A personal portfolio for Sandy Yoga Prakasa Holley, focused on market, product, and data research. Built with React and Vite, with locally hosted fonts and custom SVG illustrations.
 
+![Sandy Holley's research portfolio design preview](docs/portfolio-preview.png)
+
+This image previews the design. For the interactive website, enable GitHub Pages using the instructions below.
+
 ## Develop
 
 Requires Node.js 20.19+ or 22.12+ and npm.
@@ -49,7 +53,7 @@ To test the same build locally:
 
 ```sh
 VITE_BASE_PATH=/Research-Portfolio/ npm run build
-npm run preview -- --port 4173
+VITE_BASE_PATH=/Research-Portfolio/ npm run preview -- --port 4173
 ```
 
 Request `/Research-Portfolio/` on the preview server. A regular `npm run build` still targets the root path for other hosting providers.
