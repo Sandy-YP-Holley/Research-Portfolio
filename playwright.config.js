@@ -6,7 +6,7 @@ export default defineConfig({
   fullyParallel: true,
   workers: 2,
   use: {
-    baseURL: "http://127.0.0.1:5173",
+    baseURL: "http://127.0.0.1:4174/Research-Portfolio/",
     reducedMotion: "reduce",
     viewport: { width: 1440, height: 1000 },
     launchOptions: {
@@ -16,8 +16,8 @@ export default defineConfig({
     },
   },
   webServer: {
-    command: "npm run dev -- --port 5173 --strictPort",
-    url: "http://127.0.0.1:5173",
+    command: "node tests/serve-pages.mjs",
+    url: "http://127.0.0.1:4174/Research-Portfolio/",
     reuseExistingServer: !process.env.CI,
   },
 });

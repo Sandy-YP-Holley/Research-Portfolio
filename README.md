@@ -4,7 +4,7 @@ A personal portfolio for Sandy Yoga Prakasa Holley, focused on market, product, 
 
 ![Sandy Holley's research portfolio design preview](docs/portfolio-preview.png)
 
-This image previews the design. For the interactive website, enable GitHub Pages using the instructions below.
+Website: https://sandy-yp-holley.github.io/Research-Portfolio/
 
 ## Develop
 
@@ -25,35 +25,35 @@ npm run preview
 npm test
 ```
 
-Browser tests use `/usr/bin/chromium` when available. Else install Playwright's Chromium with `npx playwright install chromium`, or set `CHROMIUM_PATH` to an installed Chromium executable. Tests cover the research explorer, filters, modals, keyboard focus, approach sections, mobile navigation, clipboard, responsive layout, assets, and automated accessibility checks.
+`npm run build` generates `dist/` and refreshes the compiled `index.html`, `assets/`, `favicon.svg`, and `.nojekyll` at the repository root. Commit these generated files with source changes so Pages always serves a current build. Edit `src/index.html` for the HTML template; the root `index.html` is generated.
+
+Browser tests serve the actual compiled repository files under `/Research-Portfolio/`, without Vite or a route fallback. This catches the blank-page failure caused by deploying raw JSX or broken asset URLs. Tests use `/usr/bin/chromium` when available. Else install Playwright's Chromium with `npx playwright install chromium`, or set `CHROMIUM_PATH` to an installed Chromium executable. Tests cover the research explorer, filters, modals, keyboard focus, approach sections, mobile navigation, clipboard, responsive layout, assets, and automated accessibility checks.
 
 ## Personalize
 
 - `src/content.js` contains the name, optional email, LinkedIn URL, résumé URL, research interests, and approach text.
 - Add contact details to `profile.email` and `profile.linkedIn` to activate the contact links. Until then, the page explicitly says contact details are coming soon.
-- Put a résumé in `public/` and set `profile.resume` to its path (for example `/sandy-holley-resume.pdf`) to display the download link.
+- Put a résumé in `public/` and set `profile.resume` to its path to display the download link.
 - The research cards describe interests and illustrative approaches, not completed projects. Replace them with verified case studies when project information is available. The hero plot uses illustrative data.
-- Main page layout is in `src/main.jsx`; visual styles and responsive breakpoints are in `src/styles.css`.
+- Main page layout is in `src/main.jsx`; visual styles and responsive breakpoints are in `src/styles.css`. After editing, run `npm run build` and commit the refreshed root output too.
 
 ## Deploy
 
-Deploy the generated `dist/` directory to a static host. No API keys, backend, external font requests, or database are required. Contact links use email and LinkedIn directly; no messages are collected by the site.
+Deploy the generated `dist/` directory to any static host. No API keys, backend, external font requests, or database are required. Contact links use email and LinkedIn directly; no messages are collected by the site.
 
 ### GitHub Pages
 
-The `.github/workflows/deploy-pages.yml` workflow builds and deploys pushes to `main`.
+Pages uses **Deploy from a branch → main → / (root)**. The repository root contains the compiled site, so GitHub can publish it directly without running Node.js or trying to interpret JSX. `.nojekyll` preserves the static output.
 
-1. Open the repository's **Settings → Pages**.
-2. Under **Build and deployment → Source**, select **GitHub Actions**.
-3. Open **Actions → Deploy portfolio to GitHub Pages** and choose **Run workflow**. Future pushes to `main` deploy automatically. If a run failed before Pages was enabled, rerun it.
+Push source changes and their rebuilt output to `main`. GitHub's **pages build and deployment** workflow publishes the site automatically. The separate **Validate portfolio for GitHub Pages** workflow checks the build and tests the static output; it does not compete with the branch deployment.
 
-The expected URL after a successful deployment is `https://sandy-yp-holley.github.io/Research-Portfolio/`. The workflow sets Vite's base path to the repository name so styles, scripts, and the favicon load at that URL.
+Relative asset URLs support both the `/Research-Portfolio/` repository path and root-level hosting.
 
-To test the same build locally:
+To check the exact committed site locally:
 
 ```sh
-VITE_BASE_PATH=/Research-Portfolio/ npm run build
-VITE_BASE_PATH=/Research-Portfolio/ npm run preview -- --port 4173
+npm run build
+node tests/serve-pages.mjs
 ```
 
-Request `/Research-Portfolio/` on the preview server. A regular `npm run build` still targets the root path for other hosting providers.
+Open `http://127.0.0.1:4174/Research-Portfolio/`. `npm run preview` also serves the production build from `dist/` at the root path.

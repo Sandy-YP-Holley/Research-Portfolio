@@ -2,8 +2,20 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/");
+  await page.goto("./");
   await page.evaluate(() => document.fonts.ready);
+});
+
+test("Pages serves a compiled entry and JavaScript at the repository URL", async ({ request }) => {
+  const response = await request.get("./");
+  expect(response.status()).toBe(200);
+  const html = await response.text();
+  expect(html).not.toMatch(/(?:src|href)=["'][^"']*\.jsx/);
+  const script = html.match(/<script[^>]+src="([^"]+)"/)[1];
+  expect(script).toMatch(/^\.\/assets\/.+\.js$/);
+  const asset = await request.get(script);
+  expect(asset.status()).toBe(200);
+  expect(asset.headers()["content-type"]).toContain("javascript");
 });
 
 test("research explorer switches lenses and supports selecting observations by keyboard", async ({

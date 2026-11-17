@@ -1,8 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { fileURLToPath } from "node:url";
 
 export default defineConfig({
+  root: fileURLToPath(new URL("./src", import.meta.url)),
+  publicDir: "../public",
   plugins: [react()],
-  // Project sites on GitHub Pages are served below /<repository-name>/.
-  base: process.env.VITE_BASE_PATH || "/",
+  // Relative URLs work at both / and /Research-Portfolio/ on static hosts.
+  base: "./",
+  build: {
+    outDir: "../dist",
+    emptyOutDir: true,
+  },
 });
